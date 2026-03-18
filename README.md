@@ -2,7 +2,7 @@
 
 ### *"A journal other people write about you."*
 
-[View Live Demo](https://Aura-app-demo.vercel.app/) | [View Source](https://github.com/Sadiya-125/Aura-App) |[AI Studio Project URL](https://ai.studio/apps/35463939-8f5f-47fd-85b4-f225b02c20df)
+[View Live Demo](https://Aura-app-demo.vercel.app/) | [View Source](https://github.com/Sadiya-125/Aura-App) | [AI Studio Project URL](https://ai.studio/apps/35463939-8f5f-47fd-85b4-f225b02c20df)
 
 ---
 
