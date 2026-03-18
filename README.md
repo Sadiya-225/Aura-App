@@ -1,8 +1,8 @@
-# AURA
+# Aura App
 
 ### *"A journal other people write about you."*
 
-[AI Studio Project URL](https://ai.studio/apps/35463939-8f5f-47fd-85b4-f225b02c20df)
+[View Live Demo](https://Aura-app-demo.vercel.app/) | [View Source](https://github.com/Sadiya-125/Aura-App) |[AI Studio Project URL](https://ai.studio/apps/35463939-8f5f-47fd-85b4-f225b02c20df)
 
 ---
 
@@ -15,15 +15,13 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and authenticate with Firebase.
-
-**Deploy:** `npm run build` outputs to `.next/standalone` for Vercel/Netlify.
+Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## What is AURA?
+## What is Aura?
 
-AURA is a private recognition journal for close relationships. When someone in your inner circle does something that genuinely moves, impresses, or surprises you - you open the app and record it.
+Aura is a private recognition journal for close relationships. When someone in your inner circle does something that genuinely moves, impresses, or surprises you - you open the app and record it.
 
 Every entry has three parts:
 - **Points** (1-100) - whatever feels right for the moment
@@ -47,7 +45,7 @@ The note is the soul of every entry. Without it, the number means nothing. With 
 - **Private only** - Scores visible only to giver and receiver
 - **No comparisons** - No leaderboards, no feeds, no algorithms
 - **Monthly reset** - Scores reset each month; entries never delete
-- **Inner circle** - Friends added by AURA-ID or QR code
+- **Inner circle** - Friends added by Aura-ID or QR code
 - **Real moments** - The trigger is always physical and present
 
 ---
@@ -90,7 +88,7 @@ The note is the soul of every entry. Without it, the number means nothing. With 
 ```
 uid (doc id)
 ├── displayName: string
-├── auraId: string (unique, e.g., "AURA-K7PQ")
+├── AuraId: string (unique, e.g., "Aura-K7PQ")
 ├── avatar: string (emoji)
 ├── bio: string
 └── createdAt: timestamp
@@ -103,7 +101,7 @@ uid (doc id)
 └── createdAt: timestamp
 ```
 
-**aura_entries**
+**Aura_entries**
 ```
 ├── fromUserId: string
 ├── toUserId: string
@@ -162,7 +160,7 @@ context/
 └── AuraContext.tsx     # Entries state
 
 lib/
-├── aura.ts             # AURA-ID generation
+├── Aura.ts             # Aura-ID generation
 └── utils.ts            # Helpers
 ```
 
@@ -178,9 +176,9 @@ Literary journal - cream paper, rose ink, generous whitespace. Like a beautifull
 
 | Variable | Value | Usage |
 |----------|-------|-------|
-| `--color-aura-bg` | `#fdf8f4` | Background (warm paper white) |
-| `--color-aura-ink` | `#1a1010` | Primary text |
-| `--color-aura-rose` | `#7a5a5a` | Accent (logo, scores, active states) |
+| `--color-Aura-bg` | `#fdf8f4` | Background (warm paper white) |
+| `--color-Aura-ink` | `#1a1010` | Primary text |
+| `--color-Aura-rose` | `#7a5a5a` | Accent (logo, scores, active states) |
 | `--color-surface` | `#f5ede6` | Cards and elevated elements |
 | `--color-sent` | `#3a6a3a` | Sent entry accent (sage green) |
 
@@ -201,14 +199,10 @@ Literary journal - cream paper, rose ink, generous whitespace. Like a beautifull
 
 ## Demo Accounts
 
-For testing without real social interaction:
-
-| Email | Password | Name | AURA-ID | Avatar |
+| Email | Password | Name | Aura-ID | Avatar |
 |-------|----------|------|---------|--------|
-| priya@demo.com | demo123 | Priya | AURA-PRIY | 🌙 |
-| rohan@demo.com | demo123 | Rohan | AURA-ROHI | 🎸 |
-
-Priya has sample entries from Rohan to demonstrate the feed.
+| priya@demo.com | demo123 | Priya | Aura-PRIY | 🌙 |
+| rohan@demo.com | demo123 | Rohan | Aura-ROHI | 🎸 |
 
 ---
 
@@ -223,12 +217,8 @@ npm run lint     # Run ESLint
 
 ---
 
-## The Soul of AURA
+## The Soul of Aura
 
-> The note text inside every aura entry must feel like finding a handwritten note left for you by someone who saw you clearly.
+> The note text inside every Aura entry must feel like finding a handwritten note left for you by someone who saw you clearly.
 
 The score resets every month. The moments never do.
-
----
-
-**[View Live Demo](https://aura-app-demo.vercel.app/)**
