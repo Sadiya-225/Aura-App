@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents an Aura user profile.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The Firebase Auth UID." },
+        "displayName": { "type": "string", "description": "User's display name." },
+        "email": { "type": "string", "format": "email", "description": "User's email address." },
+        "auraId": { "type": "string", "description": "Unique short code (e.g., AURA-K7PQ)." },
+        "avatar": { "type": "string", "description": "Emoji character for avatar." },
+        "bio": { "type": "string", "description": "Short user biography." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the account was created." }
+      },
+      "required": ["uid", "displayName", "email", "auraId", "avatar", "createdAt"]
+    },
+    "Friendship": {
+      "title": "Friendship",
+      "description": "Represents a directional friendship link.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The user who added the friend." },
+        "friendId": { "type": "string", "description": "The user being added." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the friendship was created." }
+      },
+      "required": ["userId", "friendId", "createdAt"]
+    },
+    "AuraEntry": {
+      "title": "AuraEntry",
+      "description": "A single aura recognition event.",
+      "type": "object",
+      "properties": {
+        "fromUserId": { "type": "string", "description": "The giver's UID." },
+        "toUserId": { "type": "string", "description": "The recipient's UID." },
+        "points": { "type": "integer", "description": "Aura points (1-100)." },
+        "category": { "type": "string", "enum": ["Style", "Wit", "Depth", "Vibe", "Taste"], "description": "The lens of recognition." },
+        "note": { "type": "string", "description": "The personal note describing the moment." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the entry was created." },
+        "month": { "type": "string", "description": "YYYY-MM string for score aggregation." },
+        "year": { "type": "integer", "description": "Year for score aggregation." }
+      },
+      "required": ["fromUserId", "toUserId", "points", "category", "note", "createdAt", "month", "year"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/friendships/{friendshipId}": {
+      "schema": "Friendship",
+      "description": "Friendship links."
+    },
+    "/aura_entries/{entryId}": {
+      "schema": "AuraEntry",
+      "description": "Aura recognition entries."
+    }
+  }
+}

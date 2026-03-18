@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: userId (Auth UID)
+    // Fields:
+    //   - uid: string (required)
+    //   - displayName: string (required, 1-50 chars)
+    //   - email: string (required, email format)
+    //   - auraId: string (required, unique)
+    //   - avatar: string (required, emoji)
+    //   - bio: string (optional, max 200 chars)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: friendships
+    // Document ID: auto-generated
+    // Fields:
+    //   - userId: string (required, owner)
+    //   - friendId: string (required)
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: aura_entries
+    // Document ID: auto-generated
+    // Fields:
+    //   - fromUserId: string (required, owner)
+    //   - toUserId: string (required)
+    //   - points: int (required, 1-100)
+    //   - category: string (required, enum)
+    //   - note: string (required, 1-500 chars)
+    //   - createdAt: timestamp (required)
+    //   - month: string (required, YYYY-MM)
+    //   - year: int (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'displayName', 'email', 'auraId', 'avatar', 'createdAt']) &&
+             data.uid == request.auth.uid &&
+             data.displayName is string && data.displayName.size() > 0 && data.displayName.size() <= 50 &&
+             isValidEmail(data.email) &&
+             data.auraId is string && data.auraId.size() > 0 &&
+             data.avatar is string &&
+             (!('bio' in data) || (data.bio is string && data.bio.size() <= 200));
+    }
+
+    function isValidFriendship(data) {
+      return data.keys().hasAll(['userId', 'friendId', 'createdAt']) &&
+             data.userId == request.auth.uid &&
+             data.friendId is string &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidAuraEntry(data) {
+      return data.keys().hasAll(['fromUserId', 'toUserId', 'points', 'category', 'note', 'createdAt', 'month', 'year']) &&
+             data.fromUserId == request.auth.uid &&
+             data.toUserId is string &&
+             data.points is int && data.points >= 1 && data.points <= 100 &&
+             data.category in ['Style', 'Wit', 'Depth', 'Vibe', 'Taste'] &&
+             data.note is string && data.note.size() > 0 && data.note.size() <= 500 &&
+             data.createdAt is timestamp &&
+             data.month is string &&
+             data.year is int;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data) && 
+                      request.resource.data.uid == resource.data.uid &&
+                      request.resource.data.auraId == resource.data.auraId;
+    }
+
+    match /friendships/{friendshipId} {
+      allow read: if isAuthenticated() && (request.auth.uid == resource.data.userId || request.auth.uid == resource.data.friendId);
+      allow create: if isAuthenticated() && isValidFriendship(request.resource.data);
+      allow delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    match /aura_entries/{entryId} {
+      allow read: if isAuthenticated() && (request.auth.uid == resource.data.fromUserId || request.auth.uid == resource.data.toUserId);
+      allow create: if isAuthenticated() && isValidAuraEntry(request.resource.data);
+    }
+  }
+}

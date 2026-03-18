@@ -1,0 +1,7 @@
+{
+  "name": "Aura",
+  "description": "A private journal of recognition. Give and receive aura for the moments that matter.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
