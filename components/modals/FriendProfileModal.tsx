@@ -5,26 +5,30 @@ import { db } from '@/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { motion } from 'motion/react';
 import GiveAuraModal from '@/components/modals/GiveAuraModal';
+import { useAuth } from '@/context/AuthContext';
 
 export default function FriendProfileModal({ friend, onClose }: { friend: any, onClose: () => void }) {
-  const [monthlyScore, setMonthlyScore] = useState(0);
+  const { user } = useAuth();
+  const [auraFromYou, setAuraFromYou] = useState(0);
   const [showGiveAura, setShowGiveAura] = useState(false);
 
   useEffect(() => {
     const fetchScore = async () => {
+      if (!user) return;
       const now = new Date();
       const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
       const q = query(
-        collection(db, 'aura_entries'), 
+        collection(db, 'aura_entries'),
+        where('fromUserId', '==', user.uid),
         where('toUserId', '==', friend.uid),
         where('month', '==', month)
       );
       const snap = await getDocs(q);
       const total = snap.docs.reduce((sum, doc) => sum + doc.data().points, 0);
-      setMonthlyScore(total);
+      setAuraFromYou(total);
     };
     fetchScore();
-  }, [friend.uid]);
+  }, [friend.uid, user]);
 
   if (showGiveAura) {
     return <GiveAuraModal friend={friend} onClose={() => { setShowGiveAura(false); onClose(); }} />;
@@ -60,8 +64,8 @@ export default function FriendProfileModal({ friend, onClose }: { friend: any, o
           </p>
 
           <div className="bg-aura-bg p-6 rounded-xl border border-aura-surface-deep mb-10">
-            <div className="serif text-4xl text-aura-rose mb-1">{monthlyScore}</div>
-            <div className="text-aura-label text-[8px] text-aura-rose-dim">aura this month</div>
+            <div className="serif text-4xl text-aura-rose mb-1">{auraFromYou}</div>
+            <div className="text-aura-label text-[8px] text-aura-rose-dim">aura from you this month</div>
           </div>
 
           <button

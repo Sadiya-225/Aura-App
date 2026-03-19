@@ -14,7 +14,7 @@ const EMOJIS = [
 ];
 
 export default function EmojiPickerModal({ onClose }: { onClose: () => void }) {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
 
   const handleSelect = async (emoji: string) => {
     if (!user) return;
@@ -22,6 +22,7 @@ export default function EmojiPickerModal({ onClose }: { onClose: () => void }) {
       await updateDoc(doc(db, 'users', user.uid), {
         avatar: emoji,
       });
+      await refreshProfile();
       onClose();
     } catch (err) {
       console.error('Failed to update avatar');

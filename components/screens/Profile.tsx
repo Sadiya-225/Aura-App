@@ -9,7 +9,7 @@ import EmojiPickerModal from '@/components/modals/EmojiPickerModal';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function Profile() {
-  const { user, profile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const [name, setName] = useState(profile?.displayName || '');
   const [bio, setBio] = useState(profile?.bio || '');
   const [friendIdInput, setFriendIdInput] = useState('');
@@ -26,6 +26,7 @@ export default function Profile() {
         displayName: name,
         bio: bio,
       });
+      await refreshProfile();
       setMessage({ text: 'Profile updated', type: 'success' });
     } catch (err) {
       setMessage({ text: 'Update failed', type: 'error' });
