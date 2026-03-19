@@ -18,6 +18,14 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: 'Aura',
   description: 'A private journal of recognition.',
+  icons: {
+    icon: [
+      { url: '/favicon/favicon.ico' },
+      { url: '/favicon/icon1.png', type: 'image/png' },
+    ],
+    apple: '/favicon/apple-icon.png',
+  },
+  manifest: '/favicon/manifest.json',
 };
 
 export default function RootLayout({
