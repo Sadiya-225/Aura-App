@@ -9,8 +9,8 @@ import { motion } from 'motion/react';
 
 interface AppShellProps {
   children: React.ReactNode;
-  activeTab: 'home' | 'friends' | 'profile';
-  setActiveTab: (tab: 'home' | 'friends' | 'profile') => void;
+  activeTab: 'home' | 'friends' | 'profile' | 'archive';
+  setActiveTab: (tab: 'home' | 'friends' | 'profile' | 'archive') => void;
 }
 
 export default function AppShell({ children, activeTab, setActiveTab }: AppShellProps) {
@@ -42,20 +42,26 @@ export default function AppShell({ children, activeTab, setActiveTab }: AppShell
       {/* Bottom Nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-6 pb-safe">
         <div className="w-full max-w-[680px] bg-aura-bg/80 backdrop-blur-xl border-t border-aura-surface flex items-center justify-around h-16">
-          <TabButton 
-            active={activeTab === 'home'} 
+          <TabButton
+            active={activeTab === 'home'}
             onClick={() => setActiveTab('home')}
             icon="✦"
             label="Home"
           />
-          <TabButton 
-            active={activeTab === 'friends'} 
+          <TabButton
+            active={activeTab === 'archive'}
+            onClick={() => setActiveTab('archive')}
+            icon="◈"
+            label="Archive"
+          />
+          <TabButton
+            active={activeTab === 'friends'}
             onClick={() => setActiveTab('friends')}
             icon="◎"
             label="Circle"
           />
-          <TabButton 
-            active={activeTab === 'profile'} 
+          <TabButton
+            active={activeTab === 'profile'}
             onClick={() => setActiveTab('profile')}
             icon="○"
             label="Profile"

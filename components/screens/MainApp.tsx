@@ -5,18 +5,20 @@ import AppShell from '@/components/layout/AppShell';
 import Home from '@/components/screens/Home';
 import Friends from '@/components/screens/Friends';
 import Profile from '@/components/screens/Profile';
+import Archive from '@/components/screens/Archive';
 import { Plus } from 'lucide-react';
 import GivePickerModal from '@/components/modals/GivePickerModal';
 import { AnimatePresence } from 'motion/react';
 
 export default function MainApp() {
-  const [activeTab, setActiveTab] = useState<'home' | 'friends' | 'profile'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'friends' | 'profile' | 'archive'>('home');
   const [showGivePicker, setShowGivePicker] = useState(false);
 
   return (
     <>
       <AppShell activeTab={activeTab} setActiveTab={setActiveTab}>
         {activeTab === 'home' && <Home />}
+        {activeTab === 'archive' && <Archive />}
         {activeTab === 'friends' && <Friends />}
         {activeTab === 'profile' && <Profile />}
       </AppShell>
