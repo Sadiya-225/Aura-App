@@ -282,7 +282,11 @@ export default function MonthInMoments({
               <h3 className="text-aura-label text-aura-rose text-center">
                 Category Breakdown
               </h3>
-              <div className="grid grid-cols-2 gap-3">
+              <div className={`grid gap-3 ${
+                Object.keys(categoryBreakdown).length === 1
+                  ? "grid-cols-1 max-w-[200px] mx-auto"
+                  : "grid-cols-2"
+              }`}>
                 {Object.entries(categoryBreakdown).map(([category, count]) => (
                   <div
                     key={category}
