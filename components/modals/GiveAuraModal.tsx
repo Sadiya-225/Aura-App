@@ -1,41 +1,47 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { db } from '@/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { motion } from 'motion/react';
-import confetti from 'canvas-confetti';
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { motion } from "motion/react";
+import confetti from "canvas-confetti";
 
-const CATEGORIES = ['Style', 'Wit', 'Depth', 'Vibe', 'Taste'];
+const CATEGORIES = ["Style", "Wit", "Depth", "Vibe", "Taste"];
 
-export default function GiveAuraModal({ friend, onClose }: { friend: any, onClose: () => void }) {
+export default function GiveAuraModal({
+  friend,
+  onClose,
+}: {
+  friend: any;
+  onClose: () => void;
+}) {
   const { user, profile } = useAuth();
   const [points, setPoints] = useState(50);
-  const [category, setCategory] = useState('');
-  const [note, setNote] = useState('');
+  const [category, setCategory] = useState("");
+  const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !profile) return;
     if (!category) {
-      setError('pick a category for this moment');
+      setError("pick a category for this moment");
       return;
     }
     if (!note) {
-      setError('add a note — the moment deserves a reason');
+      setError("add a note - the moment deserves a reason");
       return;
     }
 
     setLoading(true);
     try {
       const now = new Date();
-      const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
       const year = now.getFullYear();
 
-      await addDoc(collection(db, 'aura_entries'), {
+      await addDoc(collection(db, "aura_entries"), {
         fromUserId: user.uid,
         fromUserName: profile.displayName,
         toUserId: friend.uid,
@@ -52,12 +58,12 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#7a5a5a', '#f5ede6', '#1a1010'],
+        colors: ["#7a5a5a", "#f5ede6", "#1a1010"],
       });
 
       onClose();
     } catch (err: any) {
-      setError('Failed to give aura');
+      setError("Failed to give aura");
     } finally {
       setLoading(false);
     }
@@ -82,10 +88,17 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
         <div className="p-10">
           <div className="flex justify-between items-start mb-8">
             <div>
-              <h2 className="serif text-3xl text-aura-rose">{friend.displayName}</h2>
-              <p className="text-aura-label text-aura-rose-dim text-[10px]">how much aura did they earn?</p>
+              <h2 className="serif text-3xl text-aura-rose">
+                {friend.displayName}
+              </h2>
+              <p className="text-aura-label text-aura-rose-dim text-[10px]">
+                how much aura did they earn?
+              </p>
             </div>
-            <button onClick={onClose} className="text-aura-rose-dim hover:text-aura-rose transition-colors">
+            <button
+              onClick={onClose}
+              className="text-aura-rose-dim hover:text-aura-rose transition-colors"
+            >
               ✕
             </button>
           </div>
@@ -95,7 +108,9 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <span className="serif text-5xl text-aura-rose">{points}</span>
-                <span className="text-aura-label text-aura-rose-dim text-[12px] mt-4">/ 100</span>
+                <span className="text-aura-label text-aura-rose-dim text-[12px] mt-4">
+                  / 100
+                </span>
               </div>
               <input
                 type="range"
@@ -105,7 +120,9 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
                 onChange={(e) => setPoints(parseInt(e.target.value))}
                 className="w-full h-1 bg-aura-surface-deep rounded-full appearance-none cursor-pointer accent-aura-rose"
               />
-              <p className="text-aura-label text-[8px] text-aura-rose-dim mt-2">drag to set · max 100 per moment</p>
+              <p className="text-aura-label text-[8px] text-aura-rose-dim mt-2">
+                drag to set · max 100 per moment
+              </p>
             </div>
 
             {/* Category */}
@@ -117,8 +134,8 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
                   onClick={() => setCategory(cat)}
                   className={`px-4 py-1.5 rounded-full text-aura-label text-[10px] border transition-all ${
                     category === cat
-                      ? 'bg-aura-rose text-aura-bg border-aura-rose'
-                      : 'bg-transparent text-aura-rose-dim border-aura-surface-deep hover:border-aura-rose-dim'
+                      ? "bg-aura-rose text-aura-bg border-aura-rose"
+                      : "bg-transparent text-aura-rose-dim border-aura-surface-deep hover:border-aura-rose-dim"
                   }`}
                 >
                   {cat}
@@ -128,7 +145,9 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
 
             {/* Note */}
             <div className="flex flex-col gap-2">
-              <label className="text-aura-label text-aura-rose-dim text-[9px]">The Moment</label>
+              <label className="text-aura-label text-aura-rose-dim text-[9px]">
+                The Moment
+              </label>
               <textarea
                 required
                 rows={3}
@@ -139,14 +158,18 @@ export default function GiveAuraModal({ friend, onClose }: { friend: any, onClos
               />
             </div>
 
-            {error && <p className="text-red-500 text-aura-label text-[10px] text-center">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-aura-label text-[10px] text-center">
+                {error}
+              </p>
+            )}
 
             <button
               type="submit"
               disabled={loading}
               className="bg-aura-rose text-aura-bg py-4 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors disabled:opacity-50 shadow-lg"
             >
-              {loading ? '...' : '✦ Give Aura'}
+              {loading ? "..." : "✦ Give Aura"}
             </button>
           </form>
         </div>

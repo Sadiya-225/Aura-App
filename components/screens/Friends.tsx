@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { db } from '@/firebase';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { motion, AnimatePresence } from 'motion/react';
-import FriendProfileModal from '@/components/modals/FriendProfileModal';
+import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { motion, AnimatePresence } from "motion/react";
+import FriendProfileModal from "@/components/modals/FriendProfileModal";
 
 export default function Friends() {
   const { user } = useAuth();
@@ -16,9 +16,12 @@ export default function Friends() {
   useEffect(() => {
     if (!user) return;
 
-    const q = query(collection(db, 'friendships'), where('userId', '==', user.uid));
+    const q = query(
+      collection(db, "friendships"),
+      where("userId", "==", user.uid),
+    );
     const unsub = onSnapshot(q, async (snapshot) => {
-      const friendIds = snapshot.docs.map(doc => doc.data().friendId);
+      const friendIds = snapshot.docs.map((doc) => doc.data().friendId);
       if (friendIds.length === 0) {
         setFriends([]);
         setLoading(false);
@@ -28,13 +31,15 @@ export default function Friends() {
       // Fetch friend profiles
       const friendProfiles: any[] = [];
       for (const id of friendIds) {
-        const qProfile = query(collection(db, 'users'), where('uid', '==', id));
+        const qProfile = query(collection(db, "users"), where("uid", "==", id));
         const unsubProfile = onSnapshot(qProfile, (snap) => {
           if (!snap.empty) {
             const data = snap.docs[0].data();
-            setFriends(prev => {
-              const filtered = prev.filter(f => f.uid !== id);
-              return [...filtered, data].sort((a, b) => a.displayName.localeCompare(b.displayName));
+            setFriends((prev) => {
+              const filtered = prev.filter((f) => f.uid !== id);
+              return [...filtered, data].sort((a, b) =>
+                a.displayName.localeCompare(b.displayName),
+              );
             });
           }
         });
@@ -56,7 +61,7 @@ export default function Friends() {
           </div>
         ) : friends.length === 0 ? (
           <div className="text-center py-12 text-aura-label text-aura-rose-dim">
-            no friends yet — go to Profile to add your circle
+            no friends yet - go to Profile to add your circle
           </div>
         ) : (
           friends.map((friend, i) => (
@@ -87,9 +92,9 @@ export default function Friends() {
 
       <AnimatePresence>
         {selectedFriend && (
-          <FriendProfileModal 
-            friend={selectedFriend} 
-            onClose={() => setSelectedFriend(null)} 
+          <FriendProfileModal
+            friend={selectedFriend}
+            onClose={() => setSelectedFriend(null)}
           />
         )}
       </AnimatePresence>

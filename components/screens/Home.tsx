@@ -85,7 +85,9 @@ export default function Home() {
   // Find the most recent month with entries (excluding current month for recap)
   const recapMonthData = useMemo(() => {
     // Get all unique months from entries
-    const months = [...new Set(receivedEntries.map((e) => e.month))].filter(Boolean);
+    const months = [...new Set(receivedEntries.map((e) => e.month))].filter(
+      Boolean,
+    );
 
     // Filter out current month and sort descending
     const pastMonths = months
@@ -104,9 +106,10 @@ export default function Home() {
     return { month: null, hasEntries: false };
   }, [receivedEntries, currentMonth]);
 
-  // Check if we should show the recap banner
   const shouldShowRecapBanner = useMemo(() => {
-    return showRecapBanner && recapMonthData.hasEntries;
+    const now = new Date();
+    const isFirstWeek = now.getDate() <= 31;
+    return isFirstWeek && showRecapBanner && recapMonthData.hasEntries;
   }, [showRecapBanner, recapMonthData]);
 
   return (
@@ -170,11 +173,11 @@ export default function Home() {
             className="text-center"
           >
             <p className="serif text-lg text-aura-rose-dim italic">
-              You Radiate{" "}
+              "You Radiate{" "}
               <span className="text-aura-rose font-normal">
                 {mostGivenCategory}
               </span>{" "}
-              Most
+              Most"
             </p>
           </motion.div>
         )}

@@ -113,11 +113,11 @@ export default function MonthInMoments({
             {/* Message */}
             <div className="text-center">
               <h2 className="serif text-2xl text-aura-rose mb-4">
-                You have to see someone else clearly before you get to see
-                yourself clearly
+                You Have to See Someone Else Clearly Before You Get to See
+                Yourself Clearly
               </h2>
               <p className="text-aura-label text-aura-rose-dim text-[11px] mb-8">
-                Give aura to someone this month to unlock next month's recap
+                Give Aura to Someone this Month to Unlock Next Month's Recap
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export default function MonthInMoments({
               <p className="text-aura-label text-aura-rose-dim text-[11px]">
                 {gaveAura
                   ? "You saw others clearly this month. Your turn will come."
-                  : "No aura this month. That's okay — keep showing up."}
+                  : "No aura this month. That's okay - keep showing up."}
               </p>
             </div>
           </div>

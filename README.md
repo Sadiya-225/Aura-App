@@ -1,6 +1,6 @@
 # Aura App
 
-### *"A journal other people write about you."*
+### _"A journal other people write about you."_
 
 [View Live Demo](https://Aura-app-demo.vercel.app/) | [View Source](https://github.com/Sadiya-125/Aura-App) | [AI Studio Project URL](https://ai.studio/apps/35463939-8f5f-47fd-85b4-f225b02c20df)
 
@@ -24,6 +24,7 @@ Open [http://localhost:3000](http://localhost:3000)
 Aura is a private recognition journal for close relationships. When someone in your inner circle does something that genuinely moves, impresses, or surprises you - you open the app and record it.
 
 Every entry has three parts:
+
 - **Points** (1-100) - whatever feels right for the moment
 - **Category** - the kind of thing you witnessed
 - **Note** - your own words describing exactly what you saw
@@ -32,13 +33,13 @@ The note is the soul of every entry. Without it, the number means nothing. With 
 
 ### The Five Categories
 
-| Category | What it captures |
-|----------|-----------------|
+| Category  | What it captures                                               |
+| --------- | -------------------------------------------------------------- |
 | **Style** | The way they showed up physically - clothes, posture, presence |
-| **Wit** | Something sharp, funny, or unexpected they said |
-| **Depth** | Something unexpectedly profound that shifts your thinking |
-| **Vibe** | The energy they brought - the room changed because of them |
-| **Taste** | A choice that revealed how they see the world |
+| **Wit**   | Something sharp, funny, or unexpected they said                |
+| **Depth** | Something unexpectedly profound that shifts your thinking      |
+| **Vibe**  | The energy they brought - the room changed because of them     |
+| **Taste** | A choice that revealed how they see the world                  |
 
 ### Core Principles
 
@@ -53,6 +54,7 @@ The note is the soul of every entry. Without it, the number means nothing. With 
 ## Tech Stack
 
 ### Frontend
+
 - **Next.js 15** (App Router)
 - **React 19**
 - **Tailwind CSS 4** with CSS custom properties
@@ -61,6 +63,7 @@ The note is the soul of every entry. Without it, the number means nothing. With 
 - **qrcode.react** for QR code generation
 
 ### Backend
+
 - **Firebase Auth** for authentication
 - **Firestore** for database with security rules
 - **Realtime** via `onSnapshot` subscriptions
@@ -85,6 +88,7 @@ The note is the soul of every entry. Without it, the number means nothing. With 
 ### Collections
 
 **users**
+
 ```
 uid (doc id)
 ├── displayName: string
@@ -95,6 +99,7 @@ uid (doc id)
 ```
 
 **friendships** (directional)
+
 ```
 ├── userId: string
 ├── friendId: string
@@ -102,6 +107,7 @@ uid (doc id)
 ```
 
 **Aura_entries**
+
 ```
 ├── fromUserId: string
 ├── toUserId: string
@@ -116,6 +122,7 @@ uid (doc id)
 ### Score Computation
 
 Scores are **never stored** - always computed dynamically:
+
 - **Monthly:** Sum where `toUserId == uid && month == currentMonth`
 - **Yearly:** Sum where `toUserId == uid && year == currentYear`
 - **All-time:** Sum where `toUserId == uid`
@@ -174,35 +181,20 @@ Literary journal - cream paper, rose ink, generous whitespace. Like a beautifull
 
 ### Colors
 
-| Variable | Value | Usage |
-|----------|-------|-------|
-| `--color-Aura-bg` | `#fdf8f4` | Background (warm paper white) |
-| `--color-Aura-ink` | `#1a1010` | Primary text |
+| Variable            | Value     | Usage                                |
+| ------------------- | --------- | ------------------------------------ |
+| `--color-Aura-bg`   | `#fdf8f4` | Background (warm paper white)        |
+| `--color-Aura-ink`  | `#1a1010` | Primary text                         |
 | `--color-Aura-rose` | `#7a5a5a` | Accent (logo, scores, active states) |
-| `--color-surface` | `#f5ede6` | Cards and elevated elements |
-| `--color-sent` | `#3a6a3a` | Sent entry accent (sage green) |
+| `--color-surface`   | `#f5ede6` | Cards and elevated elements          |
+| `--color-sent`      | `#3a6a3a` | Sent entry accent (sage green)       |
 
 ### Typography
 
-| Font | Usage |
-|------|-------|
-| **Cormorant Garamond** | Headings, scores, entry notes (italic with quotation marks) |
-| **DM Mono** | Labels, metadata, navigation (all-caps, 0.4em letter-spacing) |
-
-### Key Components
-
-- **Aura Orb:** 240px pulsing circle with 80px score, rose glow animation
-- **AuraEntry:** Surface card with colored left border, quoted note in italic
-- **Navigation:** Sticky top bar, frosted bottom tabs (✦/◎/○)
-
----
-
-## Demo Accounts
-
-| Email | Password | Name | Aura-ID | Avatar |
-|-------|----------|------|---------|--------|
-| priya@demo.com | demo123 | Priya | Aura-PRIY | 🌙 |
-| rohan@demo.com | demo123 | Rohan | Aura-ROHI | 🎸 |
+| Font                   | Usage                                                         |
+| ---------------------- | ------------------------------------------------------------- |
+| **Cormorant Garamond** | Headings, scores, entry notes (italic with quotation marks)   |
+| **DM Mono**            | Labels, metadata, navigation (all-caps, 0.4em letter-spacing) |
 
 ---
 

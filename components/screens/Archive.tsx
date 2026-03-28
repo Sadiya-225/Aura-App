@@ -75,7 +75,14 @@ export default function Archive() {
         (a, b) => b.createdAt?.seconds - a.createdAt?.seconds,
       ),
     }));
-  }, [receivedEntries, selectedPerson, selectedCategory, searchQuery, startDate, endDate]);
+  }, [
+    receivedEntries,
+    selectedPerson,
+    selectedCategory,
+    searchQuery,
+    startDate,
+    endDate,
+  ]);
 
   // Get unique people who gave aura
   const uniquePeople = useMemo(() => {
@@ -104,7 +111,7 @@ export default function Archive() {
       <section className="text-center">
         <h1 className="serif text-4xl text-aura-rose mb-2">Archive</h1>
         <p className="text-aura-label text-aura-rose-dim text-[10px]">
-          Your permanent journal — moments never disappear
+          Your permanent journal - moments never disappear
         </p>
       </section>
 
@@ -167,7 +174,9 @@ export default function Archive() {
           </label>
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1">
-              <span className="text-aura-label text-[8px] text-aura-rose-dim">From</span>
+              <span className="text-aura-label text-[8px] text-aura-rose-dim">
+                From
+              </span>
               <input
                 type="date"
                 value={startDate}
@@ -176,7 +185,9 @@ export default function Archive() {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-aura-label text-[8px] text-aura-rose-dim">To</span>
+              <span className="text-aura-label text-[8px] text-aura-rose-dim">
+                To
+              </span>
               <input
                 type="date"
                 value={endDate}
