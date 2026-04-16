@@ -11,7 +11,7 @@ service cloud.firestore {
     //   - uid: string (required)
     //   - displayName: string (required, 1-50 chars)
     //   - email: string (required, email format)
-    //   - auraId: string (required, unique)
+    //   - seviId: string (required, unique)
     //   - avatar: string (required, emoji)
     //   - bio: string (optional, max 200 chars)
     //   - createdAt: timestamp (required)
@@ -23,7 +23,7 @@ service cloud.firestore {
     //   - friendId: string (required)
     //   - createdAt: timestamp (required)
     //
-    // Collection: aura_entries
+    // Collection: sevi_entries
     // Document ID: auto-generated
     // Fields:
     //   - fromUserId: string (required, owner)
@@ -53,11 +53,11 @@ service cloud.firestore {
     }
 
     function isValidUser(data) {
-      return data.keys().hasAll(['uid', 'displayName', 'email', 'auraId', 'avatar', 'createdAt']) &&
+      return data.keys().hasAll(['uid', 'displayName', 'email', 'seviId', 'avatar', 'createdAt']) &&
              data.uid == request.auth.uid &&
              data.displayName is string && data.displayName.size() > 0 && data.displayName.size() <= 50 &&
              isValidEmail(data.email) &&
-             data.auraId is string && data.auraId.size() > 0 &&
+             data.seviId is string && data.seviId.size() > 0 &&
              data.avatar is string &&
              (!('bio' in data) || (data.bio is string && data.bio.size() <= 200));
     }
@@ -69,7 +69,7 @@ service cloud.firestore {
              data.createdAt is timestamp;
     }
 
-    function isValidAuraEntry(data) {
+    function isValidSeviEntry(data) {
       return data.keys().hasAll(['fromUserId', 'toUserId', 'points', 'category', 'note', 'createdAt', 'month', 'year']) &&
              data.fromUserId == request.auth.uid &&
              data.toUserId is string &&
@@ -88,9 +88,9 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if isAuthenticated();
       allow create: if isOwner(userId) && isValidUser(request.resource.data);
-      allow update: if isOwner(userId) && isValidUser(request.resource.data) && 
+      allow update: if isOwner(userId) && isValidUser(request.resource.data) &&
                       request.resource.data.uid == resource.data.uid &&
-                      request.resource.data.auraId == resource.data.auraId;
+                      request.resource.data.seviId == resource.data.seviId;
     }
 
     match /friendships/{friendshipId} {
@@ -99,9 +99,9 @@ service cloud.firestore {
       allow delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
     }
 
-    match /aura_entries/{entryId} {
+    match /sevi_entries/{entryId} {
       allow read: if isAuthenticated() && (request.auth.uid == resource.data.fromUserId || request.auth.uid == resource.data.toUserId);
-      allow create: if isAuthenticated() && isValidAuraEntry(request.resource.data);
+      allow create: if isAuthenticated() && isValidSeviEntry(request.resource.data);
     }
   }
 }

@@ -8,7 +8,7 @@ import MonthInMoments from "@/components/screens/MonthInMoments";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-export default function Home() {
+export default function Home({ onNavigateToArchive }: { onNavigateToArchive?: () => void }) {
   const { profile } = useAuth();
   const { receivedEntries, sentEntries, loading } = useAura();
   const [filter, setFilter] = useState<"all" | "received" | "sent">("all");
@@ -117,11 +117,11 @@ export default function Home() {
       <div className="flex flex-col gap-12">
         {/* Month in Moments Banner */}
         {shouldShowRecapBanner && (
-          <motion.button
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={() => setShowMonthInMoments(true)}
-            className="relative overflow-hidden bg-gradient-to-r from-aura-rose/20 to-aura-rose/10 border border-aura-rose/30 rounded-xl p-4 hover:from-aura-rose/30 hover:to-aura-rose/20 transition-all"
+            className="relative overflow-hidden bg-gradient-to-r from-aura-rose/20 to-aura-rose/10 border border-aura-rose/30 rounded-xl p-4 hover:from-aura-rose/30 hover:to-aura-rose/20 transition-all cursor-pointer"
           >
             <button
               onClick={(e) => {
@@ -145,7 +145,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </motion.button>
+          </motion.div>
         )}
 
         {/* Hero */}
@@ -153,7 +153,7 @@ export default function Home() {
           <div className="text-8xl mb-4">{profile?.avatar}</div>
           <h2 className="serif text-4xl mb-1">{profile?.displayName}</h2>
           <p className="text-aura-label text-aura-rose-dim">
-            {profile?.auraId}
+            {profile?.seviId}
           </p>
         </section>
 
@@ -186,7 +186,7 @@ export default function Home() {
 
         {/* Feed */}
         <section className="flex flex-col gap-6">
-          <h3 className="text-aura-label text-aura-rose">Aura Feed</h3>
+          <h3 className="text-aura-label text-aura-rose">Sevi Feed</h3>
 
           {/* Filters */}
           <div className="flex gap-2">
@@ -239,6 +239,10 @@ export default function Home() {
             onGiveAura={() => {
               // This will be handled by the FAB in MainApp
               setShowMonthInMoments(false);
+            }}
+            onViewArchive={() => {
+              setShowMonthInMoments(false);
+              onNavigateToArchive?.();
             }}
           />
         )}

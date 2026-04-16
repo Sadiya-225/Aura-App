@@ -1,36 +1,43 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { auth, db } from '@/firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { generateAuraId } from '@/lib/aura';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState } from "react";
+import { auth, db } from "@/firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { generateSeviId } from "@/lib/aura";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function Landing() {
-  const [mode, setMode] = useState<'landing' | 'login' | 'signup'>('landing');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  const [mode, setMode] = useState<"landing" | "login" | "signup">("landing");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      if (mode === 'signup') {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        const auraId = generateAuraId();
-        await setDoc(doc(db, 'users', userCred.user.uid), {
+      if (mode === "signup") {
+        const userCred = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
+        const seviId = generateSeviId();
+        await setDoc(doc(db, "users", userCred.user.uid), {
           uid: userCred.user.uid,
           displayName: name,
           email,
-          auraId,
-          avatar: '✦',
-          bio: '',
+          seviId,
+          avatar: "✦",
+          bio: "",
           createdAt: serverTimestamp(),
         });
       } else {
@@ -49,7 +56,7 @@ export default function Landing() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-aura-rose/5 rounded-full blur-[100px] animate-pulse" />
 
       <AnimatePresence mode="wait">
-        {mode === 'landing' ? (
+        {mode === "landing" ? (
           <motion.div
             key="landing"
             initial={{ opacity: 0, y: 20 }}
@@ -57,19 +64,21 @@ export default function Landing() {
             exit={{ opacity: 0, y: -20 }}
             className="text-center z-10"
           >
-            <h1 className="text-8xl serif text-aura-rose tracking-[0.2em] mb-4">AURA</h1>
+            <h1 className="text-8xl serif text-aura-rose tracking-[0.2em] mb-4">
+              SEVI
+            </h1>
             <p className="text-aura-label text-aura-rose-dim mb-12">
               a journal other people write about you
             </p>
             <div className="flex flex-col gap-4 w-64 mx-auto">
               <button
-                onClick={() => setMode('signup')}
+                onClick={() => setMode("signup")}
                 className="bg-aura-rose text-aura-bg py-3 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors"
               >
                 Begin
               </button>
               <button
-                onClick={() => setMode('login')}
+                onClick={() => setMode("login")}
                 className="text-aura-label text-aura-rose-dim hover:text-aura-rose transition-colors"
               >
                 Sign in
@@ -86,12 +95,14 @@ export default function Landing() {
           >
             <div className="absolute top-0 left-0 right-0 h-1 bg-aura-rose rounded-t-2xl" />
             <h2 className="serif text-4xl text-aura-rose mb-8 text-center">
-              {mode === 'signup' ? 'Begin' : 'Sign in'}
+              {mode === "signup" ? "Begin" : "Sign in"}
             </h2>
             <form onSubmit={handleAuth} className="flex flex-col gap-6">
-              {mode === 'signup' && (
+              {mode === "signup" && (
                 <div className="flex flex-col gap-2">
-                  <label className="text-aura-label text-aura-rose-dim">Name</label>
+                  <label className="text-aura-label text-aura-rose-dim">
+                    Name
+                  </label>
                   <input
                     type="text"
                     required
@@ -102,7 +113,9 @@ export default function Landing() {
                 </div>
               )}
               <div className="flex flex-col gap-2">
-                <label className="text-aura-label text-aura-rose-dim">Email</label>
+                <label className="text-aura-label text-aura-rose-dim">
+                  Email
+                </label>
                 <input
                   type="email"
                   required
@@ -112,7 +125,9 @@ export default function Landing() {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-aura-label text-aura-rose-dim">Password</label>
+                <label className="text-aura-label text-aura-rose-dim">
+                  Password
+                </label>
                 <input
                   type="password"
                   required
@@ -121,23 +136,33 @@ export default function Landing() {
                   className="bg-aura-bg border border-aura-ink/10 rounded-lg p-3 text-aura-ink focus:border-aura-rose outline-none transition-colors"
                 />
               </div>
-              {error && <p className="text-red-500 text-[10px] uppercase tracking-widest">{error}</p>}
+              {error && (
+                <p className="text-red-500 text-[10px] uppercase tracking-widest">
+                  {error}
+                </p>
+              )}
               <button
                 type="submit"
                 disabled={loading}
                 className="bg-aura-rose text-aura-bg py-3 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors disabled:opacity-50"
               >
-                {loading ? '...' : mode === 'signup' ? 'Create Account' : 'Sign in'}
+                {loading
+                  ? "..."
+                  : mode === "signup"
+                    ? "Create Account"
+                    : "Sign in"}
               </button>
             </form>
             <button
-              onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}
+              onClick={() => setMode(mode === "signup" ? "login" : "signup")}
               className="w-full mt-6 text-aura-label text-aura-rose-dim hover:text-aura-rose transition-colors"
             >
-              {mode === 'signup' ? 'Already have an account? Sign in' : "Don't have an account? Begin"}
+              {mode === "signup"
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Begin"}
             </button>
             <button
-              onClick={() => setMode('landing')}
+              onClick={() => setMode("landing")}
               className="w-full mt-2 text-aura-label text-aura-rose-dim/50 hover:text-aura-rose transition-colors"
             >
               Back

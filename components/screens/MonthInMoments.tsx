@@ -10,12 +10,14 @@ interface MonthInMomentsProps {
   month?: string; // YYYY-MM format, defaults to last month
   onClose: () => void;
   onGiveAura?: () => void;
+  onViewArchive?: () => void;
 }
 
 export default function MonthInMoments({
   month,
   onClose,
   onGiveAura,
+  onViewArchive,
 }: MonthInMomentsProps) {
   const { profile } = useAuth();
   const { receivedEntries, sentEntries } = useAura();
@@ -80,7 +82,6 @@ export default function MonthInMoments({
     return monthEntries.slice(0, 3);
   }, [monthEntries]);
 
-  // If user didn't give aura, show locked state
   if (!gaveAura && monthEntries.length > 0) {
     return (
       <div className="fixed inset-0 z-[120] flex items-center justify-center p-6">
@@ -117,7 +118,7 @@ export default function MonthInMoments({
                 Yourself Clearly
               </h2>
               <p className="text-aura-label text-aura-rose-dim text-[11px] mb-8">
-                Give Aura to Someone this Month to Unlock Next Month's Recap
+                Give Sevi to Someone this Month to Unlock Next Month's Recap
               </p>
             </div>
 
@@ -129,7 +130,7 @@ export default function MonthInMoments({
               }}
               className="w-full bg-aura-rose text-aura-bg py-3 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors"
             >
-              Give aura to someone
+              Give Sevi to Someone
             </button>
           </div>
         </motion.div>
@@ -282,11 +283,13 @@ export default function MonthInMoments({
               <h3 className="text-aura-label text-aura-rose text-center">
                 Category Breakdown
               </h3>
-              <div className={`grid gap-3 ${
-                Object.keys(categoryBreakdown).length === 1
-                  ? "grid-cols-1 max-w-[200px] mx-auto"
-                  : "grid-cols-2"
-              }`}>
+              <div
+                className={`grid gap-3 ${
+                  Object.keys(categoryBreakdown).length === 1
+                    ? "grid-cols-1 max-w-[200px] mx-auto"
+                    : "grid-cols-2"
+                }`}
+              >
                 {Object.entries(categoryBreakdown).map(([category, count]) => (
                   <div
                     key={category}
@@ -309,7 +312,7 @@ export default function MonthInMoments({
             <button
               onClick={() => {
                 onClose();
-                // Navigate to archive - we'll need to implement this
+                onViewArchive?.();
               }}
               className="w-full bg-transparent border border-aura-rose text-aura-rose py-3 rounded-full text-aura-label hover:bg-aura-rose/10 transition-colors"
             >

@@ -37,14 +37,14 @@ export const AuraProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const qReceived = query(
-      collection(db, 'aura_entries'),
+      collection(db, 'sevi_entries'),
       where('toUserId', '==', user.uid),
       orderBy('createdAt', 'desc'),
       limit(50)
     );
 
     const qSent = query(
-      collection(db, 'aura_entries'),
+      collection(db, 'sevi_entries'),
       where('fromUserId', '==', user.uid),
       orderBy('createdAt', 'desc'),
       limit(50)

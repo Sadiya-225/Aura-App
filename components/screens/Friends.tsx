@@ -79,7 +79,7 @@ export default function Friends() {
                   {friend.displayName}
                 </div>
                 <div className="text-aura-label text-[10px] text-aura-rose-dim">
-                  {friend.bio || friend.auraId}
+                  {friend.bio || friend.seviId}
                 </div>
               </div>
               <div className="text-aura-rose-dim group-hover:text-aura-rose transition-colors">

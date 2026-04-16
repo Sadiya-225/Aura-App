@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { db } from '@/firebase';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { motion, AnimatePresence } from 'motion/react';
-import GiveAuraModal from '@/components/modals/GiveAuraModal';
+import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { motion, AnimatePresence } from "motion/react";
+import GiveAuraModal from "@/components/modals/GiveAuraModal";
 
 export default function GivePickerModal({ onClose }: { onClose: () => void }) {
   const { user } = useAuth();
@@ -16,9 +16,12 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     if (!user) return;
 
-    const q = query(collection(db, 'friendships'), where('userId', '==', user.uid));
+    const q = query(
+      collection(db, "friendships"),
+      where("userId", "==", user.uid),
+    );
     const unsub = onSnapshot(q, async (snapshot) => {
-      const friendIds = snapshot.docs.map(doc => doc.data().friendId);
+      const friendIds = snapshot.docs.map((doc) => doc.data().friendId);
       if (friendIds.length === 0) {
         setFriends([]);
         setLoading(false);
@@ -28,13 +31,15 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
       // Fetch friend profiles
       const friendProfiles: any[] = [];
       for (const id of friendIds) {
-        const qProfile = query(collection(db, 'users'), where('uid', '==', id));
+        const qProfile = query(collection(db, "users"), where("uid", "==", id));
         const unsubProfile = onSnapshot(qProfile, (snap) => {
           if (!snap.empty) {
             const data = snap.docs[0].data();
-            setFriends(prev => {
-              const filtered = prev.filter(f => f.uid !== id);
-              return [...filtered, data].sort((a, b) => a.displayName.localeCompare(b.displayName));
+            setFriends((prev) => {
+              const filtered = prev.filter((f) => f.uid !== id);
+              return [...filtered, data].sort((a, b) =>
+                a.displayName.localeCompare(b.displayName),
+              );
             });
           }
         });
@@ -47,12 +52,12 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
 
   if (selectedFriend) {
     return (
-      <GiveAuraModal 
-        friend={selectedFriend} 
+      <GiveAuraModal
+        friend={selectedFriend}
         onClose={() => {
           setSelectedFriend(null);
           onClose();
-        }} 
+        }}
       />
     );
   }
@@ -76,10 +81,15 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
         <div className="p-10">
           <div className="flex justify-between items-start mb-8">
             <div>
-              <h2 className="serif text-3xl text-aura-rose">Give Aura</h2>
-              <p className="text-aura-label text-aura-rose-dim text-[10px]">who moved you?</p>
+              <h2 className="serif text-3xl text-aura-rose">Give Sevi</h2>
+              <p className="text-aura-label text-aura-rose-dim text-[10px]">
+                who moved you?
+              </p>
             </div>
-            <button onClick={onClose} className="text-aura-rose-dim hover:text-aura-rose transition-colors">
+            <button
+              onClick={onClose}
+              className="text-aura-rose-dim hover:text-aura-rose transition-colors"
+            >
               ✕
             </button>
           </div>
@@ -91,7 +101,7 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
               </div>
             ) : friends.length === 0 ? (
               <div className="text-center py-12 text-aura-label text-aura-rose-dim">
-                add friends first to give them aura
+                add friends first to give them sevi
               </div>
             ) : (
               friends.map((friend) => (
@@ -106,7 +116,7 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
                       {friend.displayName}
                     </div>
                     <div className="text-aura-label text-[9px] text-aura-rose-dim">
-                      {friend.auraId}
+                      {friend.seviId}
                     </div>
                   </div>
                   <div className="text-aura-rose-dim group-hover:text-aura-rose transition-colors">

@@ -11,7 +11,7 @@ function AppContent() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-aura-bg">
-        <div className="serif text-4xl animate-pulse text-aura-rose">AURA</div>
+        <div className="serif text-4xl animate-pulse text-aura-rose">SEVI</div>
       </div>
     );
   }

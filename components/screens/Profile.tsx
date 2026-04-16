@@ -48,7 +48,7 @@ export default function Profile() {
   const handleAddFriend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !friendIdInput) return;
-    if (friendIdInput === profile?.auraId) {
+    if (friendIdInput === profile?.seviId) {
       setMessage({ text: "that's your own ID", type: "error" });
       return;
     }
@@ -57,7 +57,7 @@ export default function Profile() {
     try {
       const q = query(
         collection(db, "users"),
-        where("auraId", "==", friendIdInput),
+        where("seviId", "==", friendIdInput),
       );
       const snap = await getDocs(q);
       if (snap.empty) {
@@ -107,10 +107,10 @@ export default function Profile() {
         </button>
         <h2 className="serif text-4xl mb-1">{profile?.displayName}</h2>
         <p className="text-aura-label text-aura-rose-dim mb-4">
-          {profile?.auraId}
+          {profile?.seviId}
         </p>
         <p className="serif italic text-lg text-aura-rose-dim max-w-xs mx-auto">
-          {profile?.bio || "no bio yet"}
+          {profile?.bio || "No Bio Yet"}
         </p>
       </section>
 
@@ -158,11 +158,11 @@ export default function Profile() {
         <h3 className="text-aura-label text-aura-rose">Your ID</h3>
         <div className="bg-aura-surface p-8 rounded-xl border border-aura-surface-deep flex flex-col items-center gap-6">
           <div className="text-aura-label text-2xl tracking-[0.4em] text-aura-rose">
-            {profile?.auraId}
+            {profile?.seviId}
           </div>
           <div className="bg-white p-4 rounded-xl border border-aura-surface-deep">
             <QRCodeSVG
-              value={profile?.auraId || ""}
+              value={profile?.seviId || ""}
               size={160}
               fgColor="#1a1010"
               bgColor="#ffffff"
@@ -170,7 +170,7 @@ export default function Profile() {
           </div>
           <button
             onClick={() => {
-              navigator.clipboard.writeText(profile?.auraId || "");
+              navigator.clipboard.writeText(profile?.seviId || "");
               setMessage({
                 text: "ID copied - share it with friends",
                 type: "success",
@@ -193,11 +193,11 @@ export default function Profile() {
         >
           <div className="flex flex-col gap-2">
             <label className="text-aura-label text-aura-rose-dim text-[9px]">
-              AURA ID
+              SEVI ID
             </label>
             <input
               type="text"
-              placeholder="AURA-XXXX"
+              placeholder="SEVI-XXXX"
               value={friendIdInput}
               onChange={(e) => setFriendIdInput(e.target.value.toUpperCase())}
               className="bg-aura-bg border border-aura-ink/10 rounded-lg p-3 text-aura-ink focus:border-aura-rose outline-none transition-colors"

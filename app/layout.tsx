@@ -16,7 +16,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Aura',
+  title: 'Sevi',
   description: 'A private journal of recognition.',
   icons: {
     icon: [

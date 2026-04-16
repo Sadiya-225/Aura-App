@@ -41,7 +41,7 @@ export default function GiveAuraModal({
       const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
       const year = now.getFullYear();
 
-      await addDoc(collection(db, "aura_entries"), {
+      await addDoc(collection(db, "sevi_entries"), {
         fromUserId: user.uid,
         fromUserName: profile.displayName,
         toUserId: friend.uid,
@@ -63,7 +63,7 @@ export default function GiveAuraModal({
 
       onClose();
     } catch (err: any) {
-      setError("Failed to give aura");
+      setError("Failed to give sevi");
     } finally {
       setLoading(false);
     }
@@ -92,7 +92,7 @@ export default function GiveAuraModal({
                 {friend.displayName}
               </h2>
               <p className="text-aura-label text-aura-rose-dim text-[10px]">
-                how much aura did they earn?
+                how much sevi did they earn?
               </p>
             </div>
             <button
@@ -169,7 +169,7 @@ export default function GiveAuraModal({
               disabled={loading}
               className="bg-aura-rose text-aura-bg py-4 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors disabled:opacity-50 shadow-lg"
             >
-              {loading ? "..." : "✦ Give Aura"}
+              {loading ? "..." : "✦ Give Sevi"}
             </button>
           </form>
         </div>

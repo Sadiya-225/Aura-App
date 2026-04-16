@@ -1,17 +1,57 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/context/AuthContext';
-import { db } from '@/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
-import { motion } from 'motion/react';
+import { useAuth } from "@/context/AuthContext";
+import { db } from "@/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { motion } from "motion/react";
 
 const EMOJIS = [
-  '✦', '🌙', '🎸', '🌟', '🦋', '🔥', '🌊', '🌿', '🌸', '✨',
-  '🎨', '☕', '📚', '🕯️', '🎻', '🎭', '🏔️', '🏜️', '🪐', '🐚',
-  '🦢', '🕊️', '🏹', '💎', '🗝️', '📜', '🎐', '🍵', '🍂', '🎐',
-  '🪁', '♟️', '🧶', '🪴', '🍄', '🍓', '🍋', '🥨', '🥐', '🥂',
-  '🕰️', '📻', '📸', '🎞️', '✒️'
-];
+  "✦",
+  "🌙",
+  "🎸",
+  "🌟",
+  "🦋",
+  "🔥",
+  "🌊",
+  "🌿",
+  "🌸",
+  "✨",
+  "🎨",
+  "☕",
+  "📚",
+  "🕯️",
+  "🎻",
+  "🎭",
+  "🏔️",
+  "🏜️",
+  "🪐",
+  "🐚",
+  "🦢",
+  "🕊️",
+  "🏹",
+  "💎",
+  "🗝️",
+  "📜",
+  "🎐",
+  "🍵",
+  "🍂",
+  "🌵",
+  "🪁",
+  "♟️",
+  "🧶",
+  "🪴",
+  "🍄",
+  "🍓",
+  "🍋",
+  "🥨",
+  "🥐",
+  "🥂",
+  "🕰️",
+  "📻",
+  "📸",
+  "🎞️",
+  "✒️",
+].filter((emoji, index, arr) => arr.indexOf(emoji) === index);
 
 export default function EmojiPickerModal({ onClose }: { onClose: () => void }) {
   const { user, profile, refreshProfile } = useAuth();
@@ -19,13 +59,13 @@ export default function EmojiPickerModal({ onClose }: { onClose: () => void }) {
   const handleSelect = async (emoji: string) => {
     if (!user) return;
     try {
-      await updateDoc(doc(db, 'users', user.uid), {
+      await updateDoc(doc(db, "users", user.uid), {
         avatar: emoji,
       });
       await refreshProfile();
       onClose();
     } catch (err) {
-      console.error('Failed to update avatar');
+      console.error("Failed to update avatar");
     }
   };
 
@@ -48,10 +88,17 @@ export default function EmojiPickerModal({ onClose }: { onClose: () => void }) {
         <div className="p-10">
           <div className="flex justify-between items-start mb-8">
             <div>
-              <h2 className="serif text-3xl text-aura-rose">Pick your avatar</h2>
-              <p className="text-aura-label text-aura-rose-dim text-[10px]">this is your aura face</p>
+              <h2 className="serif text-3xl text-aura-rose">
+                Pick Your Avatar
+              </h2>
+              <p className="text-aura-label text-aura-rose-dim text-[10px]">
+                this is your sevi face
+              </p>
             </div>
-            <button onClick={onClose} className="text-aura-rose-dim hover:text-aura-rose transition-colors">
+            <button
+              onClick={onClose}
+              className="text-aura-rose-dim hover:text-aura-rose transition-colors"
+            >
               ✕
             </button>
           </div>
@@ -62,7 +109,9 @@ export default function EmojiPickerModal({ onClose }: { onClose: () => void }) {
                 key={emoji}
                 onClick={() => handleSelect(emoji)}
                 className={`text-2xl p-2 rounded-lg hover:bg-aura-bg transition-colors ${
-                  profile?.avatar === emoji ? 'bg-aura-bg border border-aura-rose/30' : ''
+                  profile?.avatar === emoji
+                    ? "bg-aura-bg border border-aura-rose/30"
+                    : ""
                 }`}
               >
                 {emoji}
