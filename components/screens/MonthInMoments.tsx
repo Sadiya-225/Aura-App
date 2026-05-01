@@ -118,7 +118,7 @@ export default function MonthInMoments({
                 Yourself Clearly
               </h2>
               <p className="text-aura-label text-aura-rose-dim text-[11px] mb-8">
-                Give Sevi to Someone this Month to Unlock Next Month's Recap
+                Give Aura to Someone this Month to Unlock Next Month's Recap
               </p>
             </div>
 
@@ -130,7 +130,7 @@ export default function MonthInMoments({
               }}
               className="w-full bg-aura-rose text-aura-bg py-3 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors"
             >
-              Give Sevi to Someone
+              Give Aura to Someone
             </button>
           </div>
         </motion.div>
@@ -171,8 +171,8 @@ export default function MonthInMoments({
               </h2>
               <p className="text-aura-label text-aura-rose-dim text-[11px]">
                 {gaveAura
-                  ? "You saw others clearly this month. Your turn will come."
-                  : "No aura this month. That's okay - keep showing up."}
+                  ? "You Saw Others Clearly This Month. Your Turn Will Come."
+                  : "No Sevi This Month. That's Okay - Keep Showing Up."}
               </p>
             </div>
           </div>
@@ -181,7 +181,6 @@ export default function MonthInMoments({
     );
   }
 
-  // Unlocked state - show full recap
   return (
     <div className="fixed inset-0 z-[120] flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
       <motion.div
@@ -230,7 +229,7 @@ export default function MonthInMoments({
                 {totalAura}
               </motion.div>
               <div className="text-aura-label text-[8px] text-aura-rose-dim">
-                total aura
+                Total Sevi
               </div>
             </div>
             <div className="bg-aura-surface/50 p-6 rounded-xl border border-aura-surface-deep text-center">

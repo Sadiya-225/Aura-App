@@ -89,7 +89,7 @@ export default function FriendProfileModal({
               {seviFromYou}
             </div>
             <div className="text-aura-label text-[8px] text-aura-rose-dim">
-              sevi from you this month
+              Sevi From You This Month
             </div>
           </div>
 
@@ -97,7 +97,7 @@ export default function FriendProfileModal({
             onClick={() => setShowGiveAura(true)}
             className="w-full bg-aura-rose text-aura-bg py-4 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors shadow-lg"
           >
-            ✦ Give Sevi
+            ✦ Give Aura
           </button>
         </div>
       </motion.div>

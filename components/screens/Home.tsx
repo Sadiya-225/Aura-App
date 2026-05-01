@@ -8,7 +8,11 @@ import MonthInMoments from "@/components/screens/MonthInMoments";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-export default function Home({ onNavigateToArchive }: { onNavigateToArchive?: () => void }) {
+export default function Home({
+  onNavigateToArchive,
+}: {
+  onNavigateToArchive?: () => void;
+}) {
   const { profile } = useAuth();
   const { receivedEntries, sentEntries, loading } = useAura();
   const [filter, setFilter] = useState<"all" | "received" | "sent">("all");
@@ -210,11 +214,11 @@ export default function Home({ onNavigateToArchive }: { onNavigateToArchive?: ()
           <div className="flex flex-col gap-4">
             {loading ? (
               <div className="text-center py-12 text-aura-label text-aura-rose-dim animate-pulse">
-                loading aura...
+                Loading Sevi...
               </div>
             ) : filteredEntries.length === 0 ? (
               <div className="text-center py-12 text-aura-label text-aura-rose-dim">
-                nothing here yet
+                Nothing Here Yet
               </div>
             ) : (
               filteredEntries.map((entry, i) => (

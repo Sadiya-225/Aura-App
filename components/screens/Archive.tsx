@@ -221,7 +221,7 @@ export default function Archive() {
         ) : entriesByMonth.length === 0 ? (
           <div className="text-center py-12 text-aura-label text-aura-rose-dim">
             {receivedEntries.length === 0
-              ? "Your journal is empty. Start by giving sevi to someone."
+              ? "Your journal is empty. Start by giving aura to someone."
               : "No entries match your filters."}
           </div>
         ) : (

@@ -5,13 +5,16 @@ import { auth, db } from "@/firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
 import { generateSeviId } from "@/lib/aura";
 import { motion, AnimatePresence } from "motion/react";
+import LandingPage from "./LandingPage";
 
 export default function Landing() {
-  const [mode, setMode] = useState<"landing" | "login" | "signup">("landing");
+  const [mode, setMode] = useState<"landing" | "login" | "signup" | "marketing">("marketing");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -50,13 +53,54 @@ export default function Landing() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCred = await signInWithPopup(auth, provider);
+
+      // Check if user already exists
+      const userRef = doc(db, "users", userCred.user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        // Create new user profile if doesn't exist
+        const seviId = generateSeviId();
+        await setDoc(userRef, {
+          uid: userCred.user.uid,
+          displayName: userCred.user.displayName || "User",
+          email: userCred.user.email,
+          seviId,
+          avatar: "✦",
+          bio: "",
+          createdAt: serverTimestamp(),
+        });
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-aura-bg">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-aura-rose/5 rounded-full blur-[100px] animate-pulse" />
 
       <AnimatePresence mode="wait">
-        {mode === "landing" ? (
+        {mode === "marketing" ? (
+          <motion.div
+            key="marketing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <LandingPage onJoinClick={() => setMode("signup")} />
+          </motion.div>
+        ) : mode === "landing" ? (
           <motion.div
             key="landing"
             initial={{ opacity: 0, y: 20 }}
@@ -78,10 +122,17 @@ export default function Landing() {
                 Begin
               </button>
               <button
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                className="bg-aura-surface text-aura-rose py-3 rounded-full text-aura-label hover:bg-aura-surface-deep transition-colors border border-aura-surface-deep disabled:opacity-50"
+              >
+                {loading ? "..." : "Sign in with Google"}
+              </button>
+              <button
                 onClick={() => setMode("login")}
                 className="text-aura-label text-aura-rose-dim hover:text-aura-rose transition-colors"
               >
-                Sign in
+                Sign in with Email
               </button>
             </div>
           </motion.div>
@@ -153,6 +204,26 @@ export default function Landing() {
                     : "Sign in"}
               </button>
             </form>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 my-6">
+              <div className="h-px bg-aura-surface-deep flex-1" />
+              <span className="text-aura-label text-[10px] text-aura-rose-dim">
+                OR
+              </span>
+              <div className="h-px bg-aura-surface-deep flex-1" />
+            </div>
+
+            {/* Google Sign-in */}
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="w-full bg-aura-surface text-aura-rose py-3 rounded-full text-aura-label hover:bg-aura-surface-deep transition-colors border border-aura-surface-deep disabled:opacity-50"
+            >
+              {loading ? "..." : "Continue with Google"}
+            </button>
+
             <button
               onClick={() => setMode(mode === "signup" ? "login" : "signup")}
               className="w-full mt-6 text-aura-label text-aura-rose-dim hover:text-aura-rose transition-colors"
@@ -162,7 +233,7 @@ export default function Landing() {
                 : "Don't have an account? Begin"}
             </button>
             <button
-              onClick={() => setMode("landing")}
+              onClick={() => setMode("marketing")}
               className="w-full mt-2 text-aura-label text-aura-rose-dim/50 hover:text-aura-rose transition-colors"
             >
               Back

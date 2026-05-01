@@ -63,7 +63,7 @@ export default function GiveAuraModal({
 
       onClose();
     } catch (err: any) {
-      setError("Failed to give sevi");
+      setError("Failed to Give Sevi");
     } finally {
       setLoading(false);
     }
@@ -92,7 +92,7 @@ export default function GiveAuraModal({
                 {friend.displayName}
               </h2>
               <p className="text-aura-label text-aura-rose-dim text-[10px]">
-                how much sevi did they earn?
+                how much aura did they earn?
               </p>
             </div>
             <button
@@ -169,7 +169,7 @@ export default function GiveAuraModal({
               disabled={loading}
               className="bg-aura-rose text-aura-bg py-4 rounded-full text-aura-label hover:bg-aura-rose-dim transition-colors disabled:opacity-50 shadow-lg"
             >
-              {loading ? "..." : "✦ Give Sevi"}
+              {loading ? "..." : "✦ Give Aura"}
             </button>
           </form>
         </div>

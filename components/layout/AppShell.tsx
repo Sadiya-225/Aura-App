@@ -58,17 +58,17 @@ export default function AppShell({
           />
 
           <TabButton
-            active={activeTab === "archive"}
-            onClick={() => setActiveTab("archive")}
-            icon="◈"
-            label="Archive"
-          />
-
-          <TabButton
             active={activeTab === "friends"}
             onClick={() => setActiveTab("friends")}
             icon="◎"
             label="Circle"
+          />
+
+          <TabButton
+            active={activeTab === "archive"}
+            onClick={() => setActiveTab("archive")}
+            icon="◈"
+            label="Archive"
           />
 
           <TabButton
