@@ -198,7 +198,7 @@ export default function MonthInMoments({
         className="w-full max-w-md bg-aura-bg rounded-2xl border border-aura-surface-deep shadow-2xl relative z-10 my-4 sm:my-8"
         style={{
           background: "linear-gradient(135deg, #fdf8f4 0%, #f9f1eb 100%)",
-        }}
+        } as React.CSSProperties}
       >
         {/* Close Button */}
         <button
