@@ -81,7 +81,7 @@ export default function GivePickerModal({ onClose }: { onClose: () => void }) {
         <div className="p-10">
           <div className="flex justify-between items-start mb-8">
             <div>
-              <h2 className="serif text-3xl text-aura-rose">Give Sevi</h2>
+              <h2 className="serif text-3xl text-aura-rose">Give Aura</h2>
               <p className="text-aura-label text-aura-rose-dim text-[10px]">
                 who moved you?
               </p>

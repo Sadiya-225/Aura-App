@@ -63,7 +63,7 @@ export default function GiveAuraModal({
 
       onClose();
     } catch (err: any) {
-      setError("Failed to Give Sevi");
+      setError("Failed to Give Aura");
     } finally {
       setLoading(false);
     }

@@ -125,7 +125,7 @@ export default function LandingPage({ onJoinClick }: LandingPageProps) {
             </div>
             <p className="text-sm sm:text-base text-aura-rose-dim leading-relaxed">
               A <span className="font-semibold">private recognition app</span>{" "}
-              for your inner circle. Give sevi to the people who move you -
+              for your inner circle. Give aura to the people who move you -
               write exactly what you saw. Receive it from the people who truly
               see you. It stays in their journal{" "}
               <span className="font-semibold">forever.</span>
