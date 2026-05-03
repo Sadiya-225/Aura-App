@@ -4,7 +4,8 @@
       "Bash(cd:*)",
       "Bash(dir:*)",
       "Bash(wc:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(findstr:*)"
     ]
   }
 }
