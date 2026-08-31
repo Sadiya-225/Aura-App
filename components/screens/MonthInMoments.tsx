@@ -3,6 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { useAura } from "@/context/AuraContext";
 import AuraEntry from "@/components/ui/AuraEntry";
+import { getCurrentMonth, getPreviousMonth } from "@/lib/aura";
 import { useMemo } from "react";
 import { motion } from "motion/react";
 
@@ -24,10 +25,7 @@ export default function MonthInMoments({
 
   // Get last month if not specified
   const targetMonth = useMemo(() => {
-    if (month) return month;
-    const now = new Date();
-    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    return `${lastMonth.getFullYear()}-${String(lastMonth.getMonth() + 1).padStart(2, "0")}`;
+    return month || getPreviousMonth();
   }, [month]);
 
   // Format month name
@@ -37,10 +35,13 @@ export default function MonthInMoments({
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
   }, [targetMonth]);
 
-  // Check if user gave aura that month
+  // Gate is a live "give to keep receiving" nudge, not retroactive — it
+  // checks whether the user has given aura to anyone THIS month, since you
+  // can't go back and give during a month that's already over.
   const gaveAura = useMemo(() => {
-    return sentEntries.some((entry) => entry.month === targetMonth);
-  }, [sentEntries, targetMonth]);
+    const currentMonth = getCurrentMonth();
+    return sentEntries.some((entry) => entry.month === currentMonth);
+  }, [sentEntries]);
 
   // Get entries for that month
   const monthEntries = useMemo(() => {
@@ -182,7 +183,7 @@ export default function MonthInMoments({
   }
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[120] flex items-start justify-center p-4 sm:p-6 overflow-y-auto scrollbar-hide">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -208,7 +209,7 @@ export default function MonthInMoments({
           ✕
         </button>
 
-        <div className="p-6 sm:p-10 flex flex-col gap-8 sm:gap-10 max-h-[85vh] overflow-y-auto">
+        <div className="p-6 sm:p-10 flex flex-col gap-8 sm:gap-10 max-h-[85vh] overflow-y-auto scrollbar-hide">
           {/* Header */}
           <section className="text-center">
             <h1 className="serif text-4xl text-aura-rose mb-2">{monthName}</h1>

@@ -9,7 +9,8 @@ import { motion, AnimatePresence } from "motion/react";
 
 export default function Archive() {
   const { profile } = useAuth();
-  const { receivedEntries, loading } = useAura();
+  const { receivedEntries, sentEntries, loading } = useAura();
+  const [viewMode, setViewMode] = useState<"received" | "sent">("received");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPerson, setSelectedPerson] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -19,13 +20,20 @@ export default function Archive() {
     null,
   );
 
+  const sourceEntries =
+    viewMode === "received" ? receivedEntries : sentEntries;
+
   // Group entries by month
   const entriesByMonth = useMemo(() => {
-    let filtered = [...receivedEntries];
+    let filtered = [...sourceEntries];
 
     // Apply filters
     if (selectedPerson !== "all") {
-      filtered = filtered.filter((e) => e.fromUserId === selectedPerson);
+      filtered = filtered.filter((e) =>
+        viewMode === "received"
+          ? e.fromUserId === selectedPerson
+          : e.toUserId === selectedPerson,
+      );
     }
     if (selectedCategory !== "all") {
       filtered = filtered.filter((e) => e.category === selectedCategory);
@@ -76,7 +84,8 @@ export default function Archive() {
       ),
     }));
   }, [
-    receivedEntries,
+    sourceEntries,
+    viewMode,
     selectedPerson,
     selectedCategory,
     searchQuery,
@@ -84,16 +93,19 @@ export default function Archive() {
     endDate,
   ]);
 
-  // Get unique people who gave aura
+  // Get unique people (givers when viewing received, recipients when viewing sent)
   const uniquePeople = useMemo(() => {
     const peopleMap = new Map();
-    receivedEntries.forEach((entry) => {
-      if (!peopleMap.has(entry.fromUserId)) {
-        peopleMap.set(entry.fromUserId, entry.fromUserName);
+    sourceEntries.forEach((entry) => {
+      const id = viewMode === "received" ? entry.fromUserId : entry.toUserId;
+      const name =
+        viewMode === "received" ? entry.fromUserName : entry.toUserName;
+      if (!peopleMap.has(id)) {
+        peopleMap.set(id, name);
       }
     });
     return Array.from(peopleMap.entries());
-  }, [receivedEntries]);
+  }, [sourceEntries, viewMode]);
 
   const categories = ["Style", "Wit", "Depth", "Vibe", "Taste"];
 
@@ -114,6 +126,26 @@ export default function Archive() {
           Your permanent journal - moments never disappear
         </p>
       </section>
+
+      {/* Received / Given Toggle */}
+      <div className="flex gap-2 justify-center">
+        <CategoryButton
+          active={viewMode === "received"}
+          onClick={() => {
+            setViewMode("received");
+            setSelectedPerson("all");
+          }}
+          label="Received"
+        />
+        <CategoryButton
+          active={viewMode === "sent"}
+          onClick={() => {
+            setViewMode("sent");
+            setSelectedPerson("all");
+          }}
+          label="Given"
+        />
+      </div>
 
       {/* Filters */}
       <section className="flex flex-col gap-4">
@@ -220,8 +252,10 @@ export default function Archive() {
           </div>
         ) : entriesByMonth.length === 0 ? (
           <div className="text-center py-12 text-aura-label text-aura-rose-dim">
-            {receivedEntries.length === 0
-              ? "Your journal is empty. Start by giving aura to someone."
+            {sourceEntries.length === 0
+              ? viewMode === "received"
+                ? "Your journal is empty. Start by giving aura to someone."
+                : "You haven't given any aura yet."
               : "No entries match your filters."}
           </div>
         ) : (
@@ -251,7 +285,7 @@ export default function Archive() {
                   <AuraEntry
                     key={entry.id}
                     entry={entry}
-                    isReceived={true}
+                    isReceived={viewMode === "received"}
                     index={i}
                   />
                 ))}

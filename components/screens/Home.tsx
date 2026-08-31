@@ -5,6 +5,7 @@ import { useAura } from "@/context/AuraContext";
 import AuraOrb from "@/components/ui/AuraOrb";
 import AuraEntry from "@/components/ui/AuraEntry";
 import MonthInMoments from "@/components/screens/MonthInMoments";
+import { getPreviousMonth } from "@/lib/aura";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -38,7 +39,7 @@ export default function Home({
     return receivedEntries.reduce((sum, e) => sum + e.points, 0);
   }, [receivedEntries]);
 
-  const mostGivenCategory = useMemo(() => {
+  const mostReceivedCategory = useMemo(() => {
     if (receivedEntries.length === 0) return null;
 
     const categoryCount: Record<string, number> = {};
@@ -80,40 +81,21 @@ export default function Home({
     );
   }, [filter, receivedEntries, sentEntries]);
 
-  // Get current month
-  const currentMonth = useMemo(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-  }, []);
-
-  // Find the most recent month with entries (excluding current month for recap)
+  // Recap always covers the literal previous calendar month, not just the
+  // most recent month that happens to have entries.
   const recapMonthData = useMemo(() => {
-    // Get all unique months from entries
-    const months = [...new Set(receivedEntries.map((e) => e.month))].filter(
-      Boolean,
-    );
+    const lastMonth = getPreviousMonth();
+    const hasEntries =
+      receivedEntries.some((e) => e.month === lastMonth) ||
+      sentEntries.some((e) => e.month === lastMonth);
 
-    // Filter out current month and sort descending
-    const pastMonths = months
-      .filter((m) => m !== currentMonth)
-      .sort((a, b) => b.localeCompare(a));
-
-    if (pastMonths.length > 0) {
-      return { month: pastMonths[0], hasEntries: true };
-    }
-
-    // If no past months, check if we have current month entries for preview
-    if (months.includes(currentMonth)) {
-      return { month: currentMonth, hasEntries: true, isCurrent: true };
-    }
-
-    return { month: null, hasEntries: false };
-  }, [receivedEntries, currentMonth]);
+    return { month: lastMonth, hasEntries };
+  }, [receivedEntries, sentEntries]);
 
   const shouldShowRecapBanner = useMemo(() => {
     const now = new Date();
-    const isFirstWeek = now.getDate() <= 31;
-    return isFirstWeek && showRecapBanner && recapMonthData.hasEntries;
+    const isFirstOfMonth = now.getDate() === 1;
+    return isFirstOfMonth && showRecapBanner && recapMonthData.hasEntries;
   }, [showRecapBanner, recapMonthData]);
 
   return (
@@ -137,15 +119,13 @@ export default function Home({
               ✕
             </button>
             <div className="flex items-center gap-3">
-              <div className="text-2xl">✦</div>
+              <div className="text-2xl text-aura-rose">✦</div>
               <div className="text-left">
                 <div className="text-aura-label text-aura-rose font-medium">
                   Your recap is ready
                 </div>
                 <div className="text-aura-label text-[9px] text-aura-rose-dim">
-                  {recapMonthData.isCurrent
-                    ? "See how people see you this month"
-                    : "See how people saw you last month"}
+                  See how people saw you last month
                 </div>
               </div>
             </div>
@@ -169,8 +149,8 @@ export default function Home({
           <StatCard label="all time" value={allTimeScore} />
         </div>
 
-        {/* Most Given Category */}
-        {mostGivenCategory && (
+        {/* Most Received Category */}
+        {mostReceivedCategory && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -179,7 +159,7 @@ export default function Home({
             <p className="serif text-lg text-aura-rose-dim italic">
               "You Radiate{" "}
               <span className="text-aura-rose font-normal">
-                {mostGivenCategory}
+                {mostReceivedCategory}
               </span>{" "}
               Most"
             </p>

@@ -89,7 +89,7 @@ export default function FriendProfileModal({
               {seviFromYou}
             </div>
             <div className="text-aura-label text-[8px] text-aura-rose-dim">
-              Sevi From You This Month
+              Aura From You This Month
             </div>
           </div>
 

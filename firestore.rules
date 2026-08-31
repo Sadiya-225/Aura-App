@@ -34,6 +34,7 @@ service cloud.firestore {
     //   - createdAt: timestamp (required)
     //   - month: string (required, YYYY-MM)
     //   - year: int (required)
+    //   - seen: boolean (optional, settable only by toUserId, only to true)
     //
     // ===============================================================
 
@@ -73,6 +74,7 @@ service cloud.firestore {
       return data.keys().hasAll(['fromUserId', 'toUserId', 'points', 'category', 'note', 'createdAt', 'month', 'year']) &&
              data.fromUserId == request.auth.uid &&
              data.toUserId is string &&
+             data.toUserId != data.fromUserId &&
              data.points is int && data.points >= 1 && data.points <= 100 &&
              data.category in ['Style', 'Wit', 'Depth', 'Vibe', 'Taste'] &&
              data.note is string && data.note.size() > 0 && data.note.size() <= 500 &&
@@ -102,6 +104,12 @@ service cloud.firestore {
     match /sevi_entries/{entryId} {
       allow read: if isAuthenticated() && (request.auth.uid == resource.data.fromUserId || request.auth.uid == resource.data.toUserId);
       allow create: if isAuthenticated() && isValidSeviEntry(request.resource.data);
+      // The receiver may flip `seen` to true once they've viewed the entry
+      // (drives the sender's "seen" indicator) — nothing else may change.
+      allow update: if isAuthenticated() &&
+                      request.auth.uid == resource.data.toUserId &&
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seen']) &&
+                      request.resource.data.seen == true;
     }
   }
 }

@@ -1,15 +1,38 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useEffect, useRef, useMemo } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   Sphere,
   MeshDistortMaterial,
   Float,
   Environment,
-  ContactShadows,
 } from "@react-three/drei";
 import * as THREE from "three";
+
+// Keeps the orb's growth completely unchanged, but dollies the camera back
+// once the sphere would otherwise outgrow the visible frustum — the fixed
+// camera distance was why a large orb got clipped by the canvas's
+// rectangular edge. Below score ~75 this is a no-op (z stays at the
+// original 3.5), so nothing about the orb's normal appearance changes.
+function CameraRig({ score }: { score: number }) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    const sphereScale = 0.5 + (score / 500) * 1.5;
+    const fovRad = (45 * Math.PI) / 180;
+    const targetRatio = 0.5; // sphere occupies at most ~50% of frustum height
+    const requiredZ = sphereScale / (Math.tan(fovRad / 2) * targetRatio);
+    const z = Math.max(3.5, requiredZ);
+
+    camera.position.z = z;
+    if (camera instanceof THREE.PerspectiveCamera) {
+      camera.updateProjectionMatrix();
+    }
+  }, [score, camera]);
+
+  return null;
+}
 
 function OrbMesh({ score }: { score: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -36,8 +59,8 @@ function OrbMesh({ score }: { score: number }) {
             radius={1}
             emissive="#7a5a5a"
             emissiveIntensity={0.5}
-            roughness={0}
-            metalness={1}
+            roughness={0.6}
+            metalness={0.1}
           />
         </Sphere>
       </group>
@@ -49,7 +72,6 @@ export default function AuraOrb({ score }: { score: number }) {
   const baseSize = 200;
   const scaleFactor = Math.min(1 + (score / 500) * 2, 2.5);
   const size = Math.max(baseSize, baseSize * scaleFactor);
-  const sphereScale = 0.5 + (score / 500) * 1.5;
 
   const textScale = 1 + (score / 500) * 0.5;
 
@@ -95,23 +117,17 @@ export default function AuraOrb({ score }: { score: number }) {
           }
         >
           <Canvas camera={{ position: [0, 0, 3.5], fov: 45 }} dpr={[1, 2]}>
-            <ambientLight intensity={1} />
+            <ambientLight intensity={1.1} />
             <spotLight
               position={[10, 10, 10]}
-              angle={0.15}
+              angle={0.3}
               penumbra={1}
-              intensity={2}
+              intensity={0.6}
             />
             <pointLight position={[-10, -10, -10]} intensity={1} />
+            <CameraRig score={score} />
             <OrbMesh score={score} />
-            <ContactShadows
-              position={[0, -1.5, 0]}
-              opacity={0.4}
-              scale={10 * sphereScale}
-              blur={2}
-              far={4.5}
-            />
-            <Environment preset="studio" />
+            <Environment preset="studio" environmentIntensity={0.4} />
           </Canvas>
         </Suspense>
       </div>

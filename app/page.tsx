@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { AuraProvider } from '@/context/AuraContext';
 import Landing from '@/components/screens/Landing';
 import MainApp from '@/components/screens/MainApp';
+import AuraReceivedHandler from '@/components/ui/AuraReceivedHandler';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -23,6 +24,7 @@ function AppContent() {
   return (
     <AuraProvider>
       <MainApp />
+      <AuraReceivedHandler />
     </AuraProvider>
   );
 }

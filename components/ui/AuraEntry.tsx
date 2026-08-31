@@ -52,8 +52,19 @@ export default function AuraEntry({ entry, isReceived, index }: AuraEntryProps) 
         “{entry.note}”
       </blockquote>
 
-      <div className="text-aura-label text-[9px] text-aura-rose-dim/50">
-        {format(date, 'MMM d, yyyy · h:mm a')}
+      <div className="flex items-center justify-between">
+        <div className="text-aura-label text-[9px] text-aura-rose-dim/50">
+          {format(date, 'MMM d, yyyy · h:mm a')}
+        </div>
+
+        {!isReceived && entry.seen && (
+          <div className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-600" />
+            <span className="text-aura-label text-[9px] text-aura-rose-dim/70">
+              Seen
+            </span>
+          </div>
+        )}
       </div>
     </motion.div>
   );

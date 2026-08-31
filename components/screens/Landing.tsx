@@ -98,7 +98,12 @@ export default function Landing() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <LandingPage onJoinClick={() => setMode("signup")} />
+            <LandingPage
+              onJoinClick={(capturedEmail) => {
+                if (capturedEmail) setEmail(capturedEmail);
+                setMode("signup");
+              }}
+            />
           </motion.div>
         ) : mode === "landing" ? (
           <motion.div

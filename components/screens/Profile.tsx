@@ -197,7 +197,7 @@ export default function Profile() {
             </label>
             <input
               type="text"
-              placeholder="SEVI-XXXX"
+              placeholder="SEVI-XXXXX"
               value={friendIdInput}
               onChange={(e) => setFriendIdInput(e.target.value.toUpperCase())}
               className="bg-aura-bg border border-aura-ink/10 rounded-lg p-3 text-aura-ink focus:border-aura-rose outline-none transition-colors"
