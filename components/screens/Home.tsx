@@ -94,9 +94,9 @@ export default function Home({
 
   const shouldShowRecapBanner = useMemo(() => {
     const now = new Date();
-    const isFirstOfMonth = now.getDate() === 1;
-    return isFirstOfMonth && showRecapBanner && recapMonthData.hasEntries;
-  }, [showRecapBanner, recapMonthData]);
+    const isRecapDay = now.getDate() === 1;
+    return isRecapDay && showRecapBanner;
+  }, [showRecapBanner]);
 
   return (
     <>
