@@ -95,7 +95,7 @@ export default function LandingPage({ onJoinClick }: LandingPageProps) {
               <span className="serif text-lg sm:text-xl text-aura-rose">
                 50
               </span>
-              <span className="ml-auto">From Sierra · this month</span>
+              <span className="ml-auto">From Sierra · This Month</span>
             </div>
           </div>
 

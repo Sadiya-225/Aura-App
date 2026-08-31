@@ -82,7 +82,7 @@ export default function GiveReceiveDemo() {
         </div>
         <div className="bg-aura-bg border border-aura-surface-deep rounded-lg p-4 mb-5">
           <div className="text-aura-label text-[8px] text-aura-rose-dim uppercase tracking-wider mb-2">
-            The Moment: What did you see?
+            The Moment - What Did You See?
           </div>
           <textarea
             value={note}
@@ -140,7 +140,7 @@ export default function GiveReceiveDemo() {
           </p>
           <div className="flex justify-between items-center">
             <span className="text-xs text-aura-rose-dim">
-              from Sierra · Just Now
+              from You · Just Now
             </span>
             <span className="serif text-2xl text-green-700">
               +{sent.points}
@@ -158,9 +158,7 @@ export default function GiveReceiveDemo() {
             <div className="text-aura-label text-[8px] text-aura-rose-dim uppercase tracking-wider mb-1">
               This moment
             </div>
-            <div className="serif text-xl text-green-700">
-              +{sent.points} ✦
-            </div>
+            <div className="serif text-xl text-green-700">+{sent.points} ✦</div>
           </div>
         </div>
       </div>
