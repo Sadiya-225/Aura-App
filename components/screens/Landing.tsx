@@ -12,6 +12,7 @@ import { doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
 import { generateSeviId } from "@/lib/aura";
 import { motion, AnimatePresence } from "motion/react";
 import LandingPage from "./LandingPage";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Landing() {
   const [mode, setMode] = useState<"landing" | "login" | "signup" | "marketing">("marketing");
@@ -20,6 +21,7 @@ export default function Landing() {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { refreshProfile } = useAuth();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +45,11 @@ export default function Landing() {
           bio: "",
           createdAt: serverTimestamp(),
         });
+        // AuthContext's own onAuthStateChanged listener fires as soon as the
+        // account is created and fetches the profile immediately — before
+        // this doc exists — leaving it stuck at null. Force a re-fetch now
+        // that the doc is actually there.
+        await refreshProfile();
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
@@ -77,6 +84,9 @@ export default function Landing() {
           bio: "",
           createdAt: serverTimestamp(),
         });
+        // Same race as email signup: AuthContext's listener already looked
+        // for this doc (and found nothing) before it existed. Re-fetch now.
+        await refreshProfile();
       }
     } catch (err: any) {
       setError(err.message);

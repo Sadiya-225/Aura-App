@@ -30,8 +30,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   const refreshProfile = async () => {
-    if (user) {
-      const docRef = doc(db, 'users', user.uid);
+    // Reads auth.currentUser directly rather than the closed-over `user`
+    // state: callers right after sign-up/sign-in (to force a re-fetch once
+    // the profile doc is actually created) hold a closure from before this
+    // provider's `user` state updated, so it would still read null here
+    // otherwise.
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const docRef = doc(db, 'users', currentUser.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setProfile(docSnap.data());
