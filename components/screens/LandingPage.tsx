@@ -581,7 +581,7 @@ export default function LandingPage({ onJoinClick }: LandingPageProps) {
               <br />
               <br />
               At the end of each month, before the reset, you receive your{" "}
-              <span className="font-semibold">Month in Moments</span> , a recap
+              <span className="font-semibold">Month in Moments</span>, a recap
               of every time you were recognised. Every note. Every person. Every
               category.
               <br />
