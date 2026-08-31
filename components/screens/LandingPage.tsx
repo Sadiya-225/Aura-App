@@ -152,7 +152,7 @@ export default function LandingPage({ onJoinClick }: LandingPageProps) {
               </p>
               <p>
                 They notice the bracelet. They hear the thing beneath the thing.
-                They are moved - quietly, specifically, genuinely - and then the
+                They are moved quietly, specifically, genuinely and then the
                 moment passes and they say nothing. Not because they didn't mean
                 it. Because there was{" "}
                 <em className="text-aura-rose italic">nowhere to put it.</em>
